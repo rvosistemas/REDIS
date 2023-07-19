@@ -1,0 +1,56 @@
+Hashes
+======================================
+// hset: cambia el valor de un campo en un hash -> devuelve 1 si el campo no existia y 0 si existia
+hset myhash name Shabbir
+
+// hget: obtiene el valor de un campo en un hash
+hget myhash name 
+
+// lo mismo de lo anteior pero con el campo email
+hset myhash email email@domain.com
+hget myhash email
+
+// hkeys: obtiene todos los campos de un hash
+// 1) "name"
+// 2) "email"
+hkeys myhash
+
+// hvals: obtiene todos los valores de un hash
+// 1) "Shabbir"
+// 2) "email@domain.com"
+hvals myhash
+
+// hgetall: obtiene todos los campos y valores de un hash
+// 1) "name"
+// 2) "Shabbir"
+// 3) "email"
+// 4) "email@domain.com"
+hgetall myhash
+
+// hexists: verifica si un campo existe en un hash -> devuelve 1 si existe y 0 si no existe
+hexists myhash name
+hexists myhash name1
+
+// hlen: obtiene la cantidad de campos de un hash -> en este caso 2
+hlen myhash
+
+// hmset: cambia el valor de varios campos en un hash
+hmset myhash age 25 country India -> devuelve OK
+hmget myhash name email -> 1) "Shabbir" 2) "email@domain.com"
+
+// hincrby: incrementa el valor de un campo en un hash
+hincrby myhash age 2 -> devuelve 27
+
+// hincrbyfloat: incrementa el valor de un campo float en un hash
+hincrbyfloat myhash age 1.5 -> devuelve 28.5
+
+// hdel: elimina un campo de un hash
+hdel myhash country -> devuelve 1
+
+// hstrlen: obtiene la longitud de un campo de un hash
+hstrlen myhash name -> devuelve 7
+
+// hsetnx: cambia el valor de un campo en un hash si el campo no existe
+// -> devuelve 1 si el campo no existia y 0 si existia
+hsetnx myhash country India   -> devuelve 1
+

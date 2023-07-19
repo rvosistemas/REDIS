@@ -1,0 +1,148 @@
+Scripts
+==================================
+// eval: Evaluate a Lua script passed as a parameter.
+// El script Lua es "redis.call('set',KEYS[1],ARGV[1])". Este script hace uso de la función 
+// redis.call() para ejecutar el comando Redis SET y establecer un valor en una clave específica.
+//      KEYS[1]: Se refiere al primer elemento de las claves proporcionadas al script, en este caso, 
+//       es "name1".
+//      ARGV[1]: Se refiere al primer elemento de los argumentos proporcionados al script, 
+//        en este caso, es "Shabbir".
+// Entonces, el comando EVAL ejecutará el script Lua, que a su vez llamará al comando 
+// Redis SET para establecer la clave "name1" con el valor "Shabbir".
+
+eval "redis.call('set',KEYS[1], ARGV[1])" 1 name1 Shabbir
+
+
+// El comando EVAL se proporciona con las siguientes partes:
+//     KEYS[1]: Se refiere al primer elemento de las claves proporcionadas al script, que es "name".
+//     ARGV[1]: Se refiere al primer elemento de los argumentos proporcionados al script, que es "Shabbir".
+//     KEYS[2]: Se refiere al segundo elemento de las claves proporcionadas al script, que es "lastname".
+//     ARGV[2]: Se refiere al segundo elemento de los argumentos proporcionados al script, que es "Dawoodi".
+// El script redis.call('mset',KEYS[1],ARGV[1],KEYS[2],ARGV[2]) ejecutará el comando MSET y establecerá dos pares clave-valor en Redis:
+//     Clave: "name", Valor: "Shabbir"
+//     Clave: "lastname", Valor: "Dawoodi"
+// El comando MSET realiza estas dos operaciones en una única llamada atómica, 
+// lo que garantiza que ambas operaciones se realicen de manera indivisible y segura. 
+// Esto es útil cuando se necesita establecer varios valores relacionados juntos para evitar 
+// inconsistencias en los datos.
+
+eval "redis.call('mset',KEYS[1],ARGV[1],KEYS[2],ARGV[2])" 2 name lastnmae Shabbir Dawoodi
+
+
+// Estás utilizando HMSET para establecer los nombres de las capitales de algunos países en un hash 
+// con clave "country_cap". Los campos serán los nombres de los países y los valores serán los 
+// nombres de sus capitales.
+// El resultado de este comando será:
+// country_cap = {
+//   "India": "New Delhi",
+//   "USA": "Washington, D.C.",
+//   "Russia": "Moscow",
+//   "Germany": "Berlin",
+//   "Japan": "Tokyo",
+//   "Italy": "Rome"
+// }
+// Ahora, si haces una consulta posterior para obtener la capital de un país específico, 
+// por ejemplo, "India", podrías utilizar el comando HGET:
+// HGET country_cap India
+// Esto te devolvería "New Delhi" como resultado, ya que es la capital establecida para "India" 
+// en el hash "country_cap".
+
+hmset country_cap India "New Delhi" USA "Washington, D.C." Russia Moscow Germany Berlin Japan Tokyo Italy Rome
+
+
+// zadd: Agrega uno o más miembros a un conjunto ordenado, o actualiza su puntuación si ya existe.
+zadd country 1 Italy 2 India 3 USA
+
+
+// zrange: Devuelve un rango de miembros en un conjunto ordenado, ordenados de menor a mayor.
+zrange order 0 -1
+
+
+// El script se ejecuta con el comando EVAL, que realiza lo siguiente:
+//     redis.call('zrange', KEYS[1], 0, -1): Este comando ZRANGE recupera todos 
+//     los miembros (países) del conjunto ordenado con clave "country" en un rango desde 
+//      el índice 0 hasta el índice -1 (es decir, todos los miembros).
+//      local order = redis.call('zrange', KEYS[1], 0, -1): Almacena los miembros recuperados en una 
+//      variable local llamada "order".
+//      return redis.call('hmget', KEYS[2], unpack(order)): Luego, se ejecuta el comando HMGET, 
+//      que recupera los valores de los campos correspondientes a los miembros (países) almacenados 
+//      en la variable "order" desde el hash con clave "country_cap".
+// Dado que KEYS[1] se proporciona como "country" y KEYS[2] se proporciona como "country_cap", 
+// esto significa que estás tratando de recuperar los valores asociados a los miembros (países) del 
+// conjunto ordenado "country" desde el hash "country_cap".
+// El resultado de este comando depende del contenido del conjunto ordenado "country" y del hash 
+// "country_cap", y devolverá una lista con los valores asociados a los países presentes en el 
+// conjunto ordenado "country" desde el hash "country_cap". Cada valor en la lista corresponderá 
+// al valor del campo en el hash que está asociado al país en el conjunto ordenado.
+
+eval "local order = redis.call('zrange', KEYS[1], 0, -1); return redis.call('hmget', KEYS[2], unpack(order));" 2 country country_cap
+
+
+// El comando SCRIPT LOAD tiene la siguiente sintaxis:
+// SCRIPT LOAD script
+// Donde:
+//     script: Es el script Lua que se va a cargar en el servidor.
+// En el caso de tu comando específico:
+// SCRIPT LOAD "local order = redis.call('zrange', KEYS[1], 0, -1); return redis.call('hmget', KEYS[2], unpack(order));"
+// Estás cargando el script Lua 
+// "local order = redis.call('zrange', KEYS[1], 0, -1); return redis.call('hmget', KEYS[2], unpack(order));" 
+// en el servidor Redis.
+// El servidor Redis responderá con un identificador único (hash SHA1) que representa el script cargado. 
+// Por ejemplo:
+// "4b71b32b3f61de8f6b2b52d3db937bf7746aa5bc"
+// Puedes usar este identificador en futuras llamadas usando EVALSHA en lugar de proporcionar el 
+// script completo cada vez, lo que puede mejorar el rendimiento y reducir la cantidad de datos 
+// que se envían al servidor.
+
+script load "local order = redis.call('zrange', KEYS[1], 0, -1); return redis.call('hmget', KEYS[2], unpack(order));"
+
+
+// En este caso, estás ejecutando el script que tiene el identificador 
+// SHA1 1807412636f2f95da7f3cdf6cb3bb0249e2587c7. Este identificador representa el script que 
+// fue cargado previamente usando el comando SCRIPT LOAD.
+// El script Lua asociado con este identificador es el siguiente:
+// local order = redis.call('zrange', KEYS[1], 0, -1)
+// return redis.call('hmget', KEYS[2], unpack(order))
+// El comando EVALSHA toma los siguientes argumentos:
+//     1807412636f2f95da7f3cdf6cb3bb0249e2587c7: Es el identificador SHA1 del script previamente cargado.
+//     2: Es el número de claves que serán pasadas al script.
+//     country: Es la primera clave que se pasará al script.
+//     country_cap: Es la segunda clave que se pasará al script.
+// Este comando ejecutará el script previamente cargado usando el identificador SHA1 
+// proporcionado y pasará las claves "country" y "country_cap" como argumentos al script. 
+// El resultado dependerá del contenido del conjunto ordenado "country" y del hash "country_cap", 
+// y devolverá una lista con los valores asociados a los países presentes en el conjunto ordenado 
+// "country" desde el hash "country_cap". Cada valor en la lista corresponderá al valor del 
+// campo en el hash que está asociado al país en el conjunto ordenado.
+
+evalsha 1807412636f2f95da7f3cdf6cb3bb0249e2587c7 2 country country_cap
+
+
+// El comando SCRIPT EXISTS tiene la siguiente sintaxis:
+// SCRIPT EXISTS script [script ...]
+// Donde:
+//     script: Es el identificador SHA1 del script que se va a verificar.
+// En el caso de tu comando específico:
+// SCRIPT EXISTS 1807412636f2f95da7f3cdf6cb3bb0249e2587c7
+// Estás verificando si el script con el identificador SHA1
+// 1807412636f2f95da7f3cdf6cb3bb0249e2587c7 existe en el servidor Redis.
+// El servidor Redis responderá con una lista de valores booleanos que indican si el script
+// existe o no. Por ejemplo:
+// 1) (integer) 1
+// Puedes usar este comando para verificar si un script existe antes de ejecutarlo usando
+// EVALSHA, lo que puede mejorar el rendimiento y reducir la cantidad de datos que se envían al servidor.
+
+script exists 1807412636f2f95da7f3cdf6cb3bb0249e2587c7
+
+
+// El comando SCRIPT FLUSH tiene la siguiente sintaxis:
+// SCRIPT FLUSH
+// Este comando eliminará todos los scripts almacenados en el servidor Redis.
+// El servidor Redis responderá con "OK" si se eliminan correctamente todos los scripts.
+
+script flush
+
+
+// busca si existe luego del flush devolviendo 0
+script exists 1807412636f2f95da7f3cdf6cb3bb0249e2587c7
+

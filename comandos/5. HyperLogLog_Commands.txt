@@ -1,0 +1,40 @@
+HyperLogLog
+============================
+
+// A HyperLogLog is a probabilistic data structure used to count unique values — 
+// or as it's referred to in mathematics: calculating the cardinality of a set. 
+// These values can be anything: for example, IP addresses for the visitors of a website, 
+// search terms, or email addresses
+// 
+// Un HyperLogLog es una estructura de datos probabilística utilizada para contar valores únicos, 
+// o como se le llama en matemáticas: calcular la cardinalidad de un conjunto. 
+// Estos valores pueden ser cualquier cosa: por ejemplo, 
+// direcciones IP de los visitantes de un sitio web, 
+// términos de búsqueda o direcciones de correo electrónico.
+
+// pfadd hll a b c d e f g h, este comando agrega los elementos a la estructura de datos HyperLogLog
+pfadd hll a b c d e f g h
+
+// pfcount hll, este comando cuenta los elementos de la estructura de datos HyperLogLog -> 8
+pfcount hll
+
+// agrega r s t
+pfadd hll r s t
+
+// pfcount hll -> 10
+pfcount hll
+
+// se crea otro HyperLogLog
+pfadd hll2 1 2 3 4 5 6
+// pfcount hll2 -> 6
+pfcount hll2
+
+// si se us pfcount con los dos HyperLogLog, se obtiene la suma de los elementos
+// de los dos HyperLogLog -> 16
+pfcount hll hll2
+
+// pfmerge hllmerge hll hll2, se crea un nuevo HyperLogLog 
+// con la union de los dos HyperLogLog -> 16
+pfmerge hllmerge hll hll2
+
+

@@ -1,0 +1,176 @@
+GEOSpatial
+===========================
+
+// key: Es el nombre de la clave de la estructura de datos GeoHash donde se almacenarán las ubicaciones.
+// longitud: Es la coordenada de longitud (eje X) de la ubicación en grados decimales.
+// latitud: Es la coordenada de latitud (eje Y) de la ubicación en grados decimales.
+// miembro: Es el nombre asociado a esa ubicación.
+// En el caso de tu comando específico:
+// GEOADD maps 72.585022 23.033863 Ahmedabad
+// Estás utilizando GEOADD para agregar la ubicación de "Ahmedabad" con las coordenadas de 
+// longitud 72.585022 y latitud 23.033863 al conjunto de datos GeoHash con clave "maps".
+// El conjunto de datos "maps" ahora tendrá una entrada con el miembro "Ahmedabad" y sus coordenadas 
+// geoespaciales asociadas.
+// Las estructuras de datos GeoHash en Redis permiten realizar operaciones geoespaciales, 
+// como búsqueda de ubicaciones cercanas, cálculo de distancias, etc. Esto es útil para aplicaciones 
+// basadas en la ubicación, como mapas, geolocalización y recomendaciones basadas en la 
+// proximidad geográfica.
+
+GEOADD maps 72.585022 23.033863 Ahmedabad 
+
+
+// El comando GEOADD también puede usarse para agregar múltiples ubicaciones a la vez.
+
+GEOADD maps 72.877426 19.076090 Mumbai 77.580643 12.972442 Bangalore
+
+// zrange trae todos los miembros de la clave maps
+// 1) "Bangalore"
+// 2) "Mumbai"
+// 3) "Ahmedabad"
+
+zrange maps 0 -1
+
+
+// geohash: Devuelve una cadena de caracteres que representa la posición geoespacial de un miembro 
+// en un conjunto de datos GeoHash. -> 1) "ts5e59nvcx0"
+
+geohash maps Ahmedabad
+
+
+// GEOADD:  Agrega una o más ubicaciones geoespaciales a un conjunto de datos GeoHash.
+// devuelve 1 si se agrega correctamente y 0 si no se agrega.
+
+GEOADD maps 73.856255 18.516726 Pune 
+
+
+// geopos: Devuelve la posición geoespacial de un miembro en un conjunto de datos GeoHash.
+// 1) 1) "72.58502215194702148"
+//    2) "23.03386300000000001"
+
+geopos maps Mumbai
+
+
+// geodist: Devuelve la distancia geoespacial entre dos miembros de un conjunto de datos GeoHash.
+// "120387.5912"
+
+geodist maps Mumbai Pune
+
+
+// GEORADIUS: Devuelve los miembros de un conjunto de datos GeoHash que están dentro de un radio
+// especificado en el centro de un miembro dado.
+// 1) "Ahmedabad"
+// 2) "Bangalore"
+// 3) "Mumbai"
+// 4) "Pune"
+
+GEORADIUS maps 72.585022 23.033863 1500 km
+
+
+// GEORADIUS con WITHCOORD: Devuelve los miembros de un conjunto de datos GeoHash que están 
+// dentro de un radio
+// especificado en el centro de un miembro dado.
+// 1) 1) "Ahmedabad"
+//    2) 1) "72.58502036333084106"
+//       2) "23.0338641085831668"
+// 2) 1) "Bangalore"
+//    2) 1) "77.58064538240432739"
+//       2) "12.97244308457791817"
+// 3) 1) "Mumbai"
+//    2) 1) "72.87742406129837036"
+//       2) "19.07608965708350723"
+// 4) 1) "Pune"
+//    2) 1) "73.85625332593917847"
+//       2) "18.51672485691942427"
+
+GEORADIUS maps 72.585022 23.033863 1500 km withcoord
+
+
+// GEORADIUS con WITHDIST: Devuelve los miembros de un conjunto de datos GeoHash que están
+// dentro de un radio
+// especificado en el centro de un miembro dado.
+// 1) 1) "Ahmedabad"
+//    2) "0.0002"
+//    3) 1) "72.58502036333084106"
+//       2) "23.0338641085831668"
+// 2) 1) "Bangalore"
+//    2) "1237.1978"
+//    3) 1) "77.58064538240432739"
+//       2) "12.97244308457791817"
+// 3) 1) "Mumbai"
+//    2) "441.2530"
+//    3) 1) "72.87742406129837036"
+//       2) "19.07608965708350723"
+// 4) 1) "Pune"
+//    2) "519.5136"
+//    3) 1) "73.85625332593917847"
+//       2) "18.51672485691942427"
+
+GEORADIUS maps 72.585022 23.033863 1500 km withcoord withdist
+
+
+// GEORADIUSBYMEMBER key member radius unit [option option ...]
+// Donde:
+//     key: Es el nombre de la clave de la estructura de datos GeoHash donde se realizará la búsqueda.
+//     member: Es el miembro específico que se utilizará como punto de referencia para la búsqueda de 
+//     ubicaciones cercanas.
+//     radius: Es el radio de búsqueda alrededor del miembro, en la unidad especificada.
+//     unit: Es la unidad de medida utilizada para el radio 
+//     (por ejemplo, "m" para metros, "km" para kilómetros, "mi" para millas, "ft" para pies, etc.).
+//     option: Son opciones adicionales que se pueden utilizar para obtener más detalles en los resultados, 
+//     como las coordenadas o la distancia a cada ubicación encontrada.
+// A continuación, explicaré cada uno de los comandos que proporcionaste:
+//     GEORADIUSBYMEMBER maps Ahmedabad 300 km
+//     Este comando buscará ubicaciones geoespaciales cercanas al miembro "Ahmedabad" en el conjunto 
+//     de datos GeoHash "maps" dentro de un radio de 300 kilómetros. 
+//     Devolverá los nombres de los miembros encontrados que están dentro del radio especificado.
+//     GEORADIUSBYMEMBER maps Ahmedabad 300 km withcoord
+//     Este comando realizará la misma búsqueda que el comando anterior, 
+//     pero también devolverá las coordenadas de longitud y latitud de cada ubicación encontrada 
+//     junto con los nombres de los miembros.
+//     GEORADIUSBYMEMBER maps Ahmedabad 300 km withcoord withdist
+//     Este comando, además de las opciones anteriores, también devolverá la distancia desde el 
+//     miembro "Ahmedabad" hasta cada ubicación encontrada en el radio especificado.
+//     GEORADIUSBYMEMBER maps Ahmedabad 300 km withcoord withdist desc
+//     Este comando realizará la misma búsqueda que el comando anterior, 
+//     pero ordenará los resultados en orden descendente según la distancia. Es decir, 
+//     las ubicaciones más cercanas a "Ahmedabad" aparecerán primero en la lista.
+//     GEORADIUSBYMEMBER maps Ahmedabad 300 km withcoord withdist asc
+//     Este comando realizará la misma búsqueda que el comando anterior, 
+//     pero ordenará los resultados en orden ascendente según la distancia. Es decir, 
+//     las ubicaciones más lejanas a "Ahmedabad" aparecerán primero en la lista.
+
+GEORADIUSBYMEMBER maps Ahmedabad 300 km  -> 1) "Ahmedabad"
+
+
+// 1) 1) "Ahmedabad"
+//    2) 1) "72.58502036333084106"
+//       2) "23.0338641085831668"
+
+GEORADIUSBYMEMBER maps Ahmedabad 300 km withcoord 
+
+
+// 1) 1) "Ahmedabad"
+//    2) "0.0000"
+//    3) 1) "72.58502036333084106"
+//       2) "23.0338641085831668"
+
+GEORADIUSBYMEMBER maps Ahmedabad 300 km withcoord withdist  
+
+
+// 1) 1) "Ahmedabad"
+//    2) "0.0000"
+//    3) 1) "72.58502036333084106"
+//       2) "23.0338641085831668"
+
+GEORADIUSBYMEMBER maps Ahmedabad 300 km withcoord withdist  desc
+
+
+// 1) 1) "Ahmedabad"
+//    2) "0.0000"
+//    3) 1) "72.58502036333084106"
+//       2) "23.0338641085831668"
+
+GEORADIUSBYMEMBER maps Ahmedabad 300 km withcoord withdist  asc
+
+
+

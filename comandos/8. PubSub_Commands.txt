@@ -1,0 +1,36 @@
+// publish: publish a message to a channel
+publish channel_name message
+
+// subscribe: subscribe to a channel
+subscribe channel_name
+
+// unsubscribe: unsubscribe from a channel
+unsubscribe channel_name
+
+si creamos un mensaje en el canal “test”:
+los que suscriban a ese canal recibirán el mensaje.
+
+
+// auth: authenticate with the server
+auth username password
+
+// psubscribe: subscribe to a pattern
+psubscribe pattern
+
+// punsubscribe: unsubscribe from a pattern
+punsubscribe pattern
+
+ejemplo de psubscribe: si creamos un mensaje en el canal “test” y otro en el canal “test2”: 
+los que suscriban a “test*” recibirán los mensajes de “test” y “test2”. 
+Los que suscriban a “test2*” recibirán solo el mensaje de “test2”.
+
+// pubsub: inspect the state of the Pub/Sub subsystem 
+pubsub subcommand [argument [argument ...]]
+
+ejemplo de pubsub: pubsub channels: lista los canales que existen en el servidor.
+
+// lista los canales y el número de suscriptores que tiene cada uno.
+pubsub numsub channel [channel ...]: 
+
+// pubsub numpat: lista el número de patrones a los que estamos suscritos.
+pubsub numpat

@@ -1,0 +1,116 @@
+Bechmark
+==========================
+deben ejecutarse en la terminal mas no dentro del cliente redis-cli
+
+// En este caso, se está ejecutando redis-benchmark con el argumento -n 10000. El argumento -n se 
+// utiliza para especificar el número total de solicitudes que se enviarán al servidor Redis durante la prueba.
+// El comando ejecutará 10,000 solicitudes contra el servidor Redis y generará estadísticas de rendimiento, 
+// como el número total de solicitudes por segundo (TPS), el tiempo promedio de respuesta por solicitud, 
+// el tiempo total de ejecución, etc.
+// La utilidad redis-benchmark es una herramienta útil para medir y comparar el rendimiento de Redis 
+// en diferentes escenarios y configuraciones. Puede ser útil para identificar cuellos de botella, 
+// optimizar configuraciones o evaluar el impacto de cambios en el hardware o la arquitectura de la red 
+// en el rendimiento del servidor Redis.
+// Es importante tener en cuenta que la prueba con 10,000 solicitudes es un ejemplo y se puede 
+// ajustar el número de solicitudes según el escenario específico que se desee evaluar. Por ejemplo, 
+// se pueden realizar pruebas con un número mayor o menor de solicitudes, dependiendo de los requisitos 
+// y las necesidades del caso de uso.
+
+redis-benchmark -n 10000
+
+
+// En este caso, redis-benchmark se está ejecutando con los siguientes argumentos:
+//     -h 127.0.0.1: Especifica la dirección IP del servidor Redis al que se enviarán las solicitudes. 
+//     En este caso, el servidor Redis está siendo accedido localmente a través de la dirección IP 127.0.0.1, 
+//     que es la dirección de loopback para el equipo local.
+//     -p 6379: Especifica el número de puerto del servidor Redis. 
+//     El número de puerto predeterminado para Redis es 6379, que es el que se está utilizando aquí.
+//     -n 1000000: Especifica el número total de solicitudes que se enviarán al servidor Redis durante la prueba. 
+//     En este caso, se están realizando 1,000,000 (un millón) de solicitudes.
+// El comando redis-benchmark ejecutará un millón de solicitudes contra el servidor Redis en la dirección 
+// y puerto especificados y generará estadísticas de rendimiento, como el número total de solicitudes 
+// por segundo (TPS), el tiempo promedio de respuesta por solicitud, el tiempo total de ejecución, etc.
+// Esta prueba ayudará a evaluar el rendimiento del servidor Redis y proporcionará información sobre 
+// cómo maneja la carga bajo el escenario específico de un millón de solicitudes. Es importante tener 
+// en cuenta que las pruebas de rendimiento deben realizarse con cuidado y en un entorno controlado 
+// para obtener resultados confiables y representativos del comportamiento del sistema en producción.
+
+redis-benchmark -h 127.0.0.1 -p 6379 -n 1000000    --> With Default 3 Bytes payload
+
+
+// -d 1000000: Especifica el tamaño de los valores de datos para cada solicitud en bytes. 
+// En este caso, los valores de datos tendrán un tamaño de 1,000,000 de bytes (1 MB).
+
+redis-benchmark -h 127.0.0.1 -p 6379 -n 1000000 -d 1000000    --> With 100kb payload 
+
+
+// -c 200: Especifica el número total de conexiones concurrentes que se utilizarán durante la prueba. 
+// En este caso, se están utilizando 200 conexiones concurrentes para enviar las solicitudes al servidor Redis.
+
+redis-benchmark -h 127.0.0.1 -p 6379 -n 1000000 -d 1000000 -c 200   --> With 100kb payload and 200 clients
+
+
+// En este caso, redis-benchmark se está ejecutando con los siguientes argumentos:
+//     -h 127.0.0.1: Especifica la dirección IP del servidor Redis al que se enviarán las solicitudes. 
+//     En este caso, el servidor Redis está siendo accedido localmente a través de la dirección IP 127.0.0.1, 
+//     que es la dirección de loopback para el equipo local.
+//     -p 6379: Especifica el número de puerto del servidor Redis. El número de puerto predeterminado 
+//     para Redis es 6379, que es el que se está utilizando aquí.
+//     -t set: Especifica el tipo de prueba que se realizará. En este caso, 
+//     se está realizando una prueba con el comando SET, que se utiliza para establecer valores en claves.
+//     -n 10000: Especifica el número total de solicitudes que se enviarán al servidor Redis durante la prueba. 
+//     En este caso, se están realizando 10,000 solicitudes.
+//     -d 1000000: Especifica el tamaño de los valores que se establecerán en las claves para cada solicitud en bytes. 
+//     En este caso, los valores tendrán un tamaño de 1,000,000 de bytes (1 MB).
+// El comando redis-benchmark ejecutará 10,000 solicitudes utilizando el comando SET para establecer 
+// valores en claves en el servidor Redis. Cada solicitud establecerá un valor con un tamaño de 1 MB 
+// (1,000,000 de bytes).
+// Esta prueba es útil para evaluar el rendimiento del servidor Redis al realizar muchas operaciones 
+// de escritura con valores de datos más grandes. Proporcionará información sobre la tasa de operaciones 
+// por segundo (OPS) que Redis puede manejar al realizar operaciones SET con valores de datos de 1 MB.
+// Nuevamente, es importante tener en cuenta que las pruebas de rendimiento deben realizarse con cuidado 
+// y en un entorno controlado para obtener resultados confiables y representativos del comportamiento 
+// del sistema en producción. El tamaño de los valores de datos en las pruebas debe ajustarse según 
+// los requisitos y el caso de uso particular que se esté evaluando.
+
+redis-benchmark -h 127.0.0.1 -p 6379 -t set -n 10000 -d 1000000
+
+
+// --csv: Indica que los resultados se mostrarán en formato CSV (Comma-Separated Values).
+redis-benchmark -h 127.0.0.1 -p 6379 -t set -n 10000 -d 1000000 --csv
+
+
+// En este caso, redis-benchmark se está ejecutando con los siguientes argumentos:
+//     -h 127.0.0.1: Especifica la dirección IP del servidor Redis al que se enviarán las solicitudes. 
+//        En este caso, el servidor Redis está siendo accedido localmente a través de la dirección IP 127.0.0.1, 
+//        que es la dirección de loopback para el equipo local.
+//     -p 6379: Especifica el número de puerto del servidor Redis. 
+//        El número de puerto predeterminado para Redis es 6379, que es el que se está utilizando aquí.
+//     -t set,lpush: Especifica los tipos de pruebas que se realizarán. 
+//        En este caso, se están realizando dos pruebas: una con el comando SET, 
+//        que se utiliza para establecer valores en claves, y otra con el comando LPUSH, 
+//        que se utiliza para agregar elementos a una lista.
+//     -n 10000: Especifica el número total de solicitudes que se enviarán al servidor Redis durante la prueba. 
+//        En este caso, se están realizando 10,000 solicitudes para cada tipo de operación.
+//     -d 1000000: Especifica el tamaño de los valores que se establecerán en las claves o se 
+//        agregarán a las listas para cada solicitud en bytes. En este caso, los valores 
+//        tendrán un tamaño de 1,000,000 de bytes (1 MB) para cada operación.
+// El comando redis-benchmark ejecutará 10,000 solicitudes para cada tipo de operación (SET y LPUSH) 
+// en el servidor Redis en la dirección y puerto especificados. Cada solicitud para SET establecerá 
+// un valor con un tamaño de 1 MB (1,000,000 de bytes), y cada solicitud para LPUSH agregará un 
+// elemento con un tamaño de 1 MB a una lista.
+// Esta prueba es útil para evaluar el rendimiento del servidor Redis al realizar diferentes 
+// tipos de operaciones (escritura en clave y agregación de elementos a listas) con valores de datos más grandes. 
+// Proporcionará información sobre la tasa de operaciones por segundo (OPS) 
+// que Redis puede manejar para cada tipo de operación y el tiempo promedio de respuesta para cada solicitud.
+// Nuevamente, es importante tener en cuenta que las pruebas de rendimiento deben realizarse con 
+// cuidado y en un entorno controlado para obtener resultados confiables y representativos del 
+// comportamiento del sistema en producción. El tamaño de los valores de datos en las pruebas debe 
+// ajustarse según los requisitos y el caso de uso particular que se esté evaluando.
+
+redis-benchmark -h 127.0.0.1 -p 6379 -t set, lpush -n 10000 -d 1000000
+
+
+Different tools such as Memtier and RDBTools also available. You can also heck that out.
+
+

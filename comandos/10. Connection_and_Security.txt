@@ -1,0 +1,52 @@
+Connection and Security
+========================================
+// flushall: flushes all the databases
+Flushall
+
+// ping: checks if the server is running
+ping
+
+// echo: prints the message
+echo message
+
+// select 0: selects the database 0
+select 0
+
+// se crea name con el valor Shabbir
+set name Shabbir
+
+// se obtiene el valor de name
+get name
+
+// luego cambiamos la base de datos
+select 1
+
+// y al pedir el valor de name nos devuelve nil
+get name
+
+// se crea name con el valor Dawoodi
+set name Dawoodi
+
+// client list: muestra los clientes conectados
+client list
+
+// client setname: cambia el nombre del cliente, y luego se verifica con client list
+client setname "Shabbir"
+
+// client kill id 17: mata la conexión con el cliente 17
+client kill id 17
+
+
+// cambiar password
+// config set requirepass "password": cambia la contraseña del servidor a password 
+// (se puede verificar con config get requirepass) y luego se puede cerrar la conexión con quit
+// luego se puede volver a conectar con redis-cli -a password
+
+config set requirepass "password"
+
+// auth password: autentica la conexión con la contraseña password
+auth password
+
+// quit: cierra la conexión
+quit
+

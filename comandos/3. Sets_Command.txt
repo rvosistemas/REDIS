@@ -1,34 +1,69 @@
 Sets
 ===============================
-
+// sadd: agregar un elemento a un conjunto devuelve 
+// 1 si se agrega correctamente y 0 si no se agrega
 sadd technology Java
 sadd technology Redis
 sadd technology Spring
+
+// smembers: obtener todos los elementos de un conjunto en este caso -> 1) Java 2) Redis 3) Spring
 smembers technology
+
+// si volvemos agregar el mismo elemento no deja ya que set es un conjunto de elementos unicos
+// devuelve 0 si no se agrega
 sadd technology Spring  --> Wont allow as unique elements
 smembers technology
-scard technology  --> get number of members in the Key Sets
-sismember technology Java  --> to check member is available or not  (Return 1 if available)
+
+// scard: obtener el numero de elementos de un conjunto en este caso 3
+scard technology
+
+// sismember: verificar si un elemento esta en un conjunto devuelve 1 si esta y 0 si no esta
+sismember technology Java
 sissmember technology Node
-spop technology   --> Used to remove random member form the set
-srem technology Spring   --> remove particular member
+
+// spop: eliminar un elemento aleatorio de un conjunto
+spop technology
+
+// srem: eliminar un elemento dado de un conjunto devuelve 1 si se elimina y 0 si no se elimina
+// en este caso se elimina Spring
+srem technology Spring
 smembers technology
+
+// crear un nuevo conjunto
 sadd frontend HTML
 sadd frontend Javascript
 sadd frontend Nodejs
 sadd technology Nodejs
+
+// sdiff: obtener la diferencia entre dos conjuntos 
+// devuelve los elementos que estan en el primer conjunto y no en el segundo
 sdiff technology frontend  --> difference of two set
-sdiffstore frontendTechDiff technology frontend  --> stores in New Destination set
+
+// sdiffstore: obtener la diferencia entre dos conjuntos y almacenarla en un nuevo conjunto
+sdiffstore frontendTechDiff technology frontend
+
+// muestra los elementos del nuevo conjunto
 smembers frontendTechDiff
-sinter technology frontend  --> intersection in all the sets
+
+// sinter: obtener la interseccion entre dos conjuntos
+sinter technology frontend
 sinter technology frontend frontendTechDiff
+
+// sinterstore: obtener la interseccion entre dos conjuntos y almacenarla en un nuevo conjunto
 sinterstore fronttechinter technology frontend
 smembers fronttechinter
 smembers technology
 smembers frontend
+
+// smove: mover un elemento de un conjunto a otro
+// en este caso se mueve Redis de technology a frontend
 smove technology frontend Redis
 smembers technology
 smembers frontend
+
+// sunion: obtener la union entre dos conjuntos
 sunion technology frontend
+
+// sunionstore: obtener la union entre dos conjuntos y almacenarla en un nuevo conjunto
 suionstore newKey technology frontned
 

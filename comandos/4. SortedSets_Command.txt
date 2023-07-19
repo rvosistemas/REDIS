@@ -1,0 +1,95 @@
+Sorted Sets:
+======================================
+
+// zadd: Agregar un elemento a un Sorted Set (Set Ordenado) con un score (puntaje) asociado
+zadd users 1 Shabbir 
+zadd users 2 Steve
+
+// zrange: Obtener todos los elementos de un Sorted Set (Set Ordenado) por rango
+// en este caso -> 1) "Shabbir" 2) "Steve"
+zrange users 0 -1
+
+// zrange: Obtener todos los elementos de un Sorted Set (Set Ordenado) 
+// por rango con score (puntaje) withscores
+// en este caso -> 1) "Shabbir" 2) "1" 3) "Steve" 4) "2"
+zrange users 0 -1 withscores
+
+// zcard: Obtener la cantidad de elementos de un Sorted Set (Set Ordenado)
+// en este caso -> 2
+zcard users
+
+// zcount: Obtener la cantidad de elementos de un Sorted Set (Set Ordenado) por rango
+// -inf -> infinito negativo | +inf -> infinito positivo,  en este caso -> 2
+zcount users -inf +inf
+
+// zcount: Obtener la cantidad de elementos de un Sorted Set (Set Ordenado) por rango
+// en este caso el 2 puntaje minimo y 10 puntaje maximo, en este caso -> 1
+zcount users 2 10
+
+// zadd: se agrega alex con puntaje 3
+zadd users 3 Alex
+
+// zrange: con el 0 y -1 se obtienen todos los elementos del Sorted Set (Set Ordenado)
+zrange users 0 -1
+
+// zrem: Eliminar un elemento de un Sorted Set (Set Ordenado)
+zrem users Alex
+zrange users 0 -1
+
+//zrevrange: Obtener todos los elementos de un Sorted Set (Set Ordenado) por rango
+zrevrange users 0 -1
+
+// zrank: Obtener el rango de un elemento de un Sorted Set (Set Ordenado) devuelve 1
+zrank users Steve
+
+// zrevrank: Obtener el rango de un elemento de un Sorted Set (Set Ordenado) devuelve 1
+zrevrank users Steve
+
+// zcore: Obtener el score (puntaje) de un elemento de un Sorted Set (Set Ordenado) devuelve 1
+zscore users Shabbir
+
+// agregam mas datos con score consecutivos
+zadd users 3 Alex 4 Ryan 5 Nimah 6 Felix
+
+
+// zrevrange: Obtener todos los elementos de un Sorted Set (Set Ordenado) por rango
+// 1) "Alex"
+// 2) "3"
+// 3) "Steve"
+// 4) "2"
+// 5) "Shabbir"
+// 6) "1"
+
+zrevrange users 0 -1 withscores
+
+
+// zrangebyscore: Obtener todos los elementos de un Sorted Set (Set Ordenado) por rango
+// 1) "Alex"
+// 2) "3"
+// 3) "Steve"
+// 4) "2"
+
+zrevrangebyscore users 5 2 withscores
+
+
+// zrange: Obtener todos los elementos de un Sorted Set (Set Ordenado) por rango
+// 1) "Shabbir"
+// 2) "1"
+// 3) "Steve"
+// 4) "2"
+// 5) "Alex"
+// 6) "3"
+
+zrange users 0 -1 withscores
+
+// zincrby: Incrementar el score (puntaje) de un elemento de un Sorted Set (Set Ordenado)
+zincrby users 2 Felix
+
+// zremrangebyscore: Eliminar elementos de un Sorted Set (Set Ordenado) por puntaje
+zremrangebyscore users -inf 2
+zrange users 0 -1 withscores
+
+// zremrangebyrank: Eliminar elementos de un Sorted Set (Set Ordenado) por rango
+zremrangebyrank users 0 1
+zrange users 0 -1 withscores
+

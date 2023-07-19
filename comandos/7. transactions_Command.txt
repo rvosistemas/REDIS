@@ -1,0 +1,30 @@
+// multi: se utiliza para iniciar una transacción multi-comando. 
+// Una transacción en Redis es una secuencia de comandos que se agrupan y ejecutan de forma atómica, 
+// lo que significa que se ejecutarán en su totalidad o no se ejecutarán en absoluto, 
+// sin intervención de otros clientes entre los comandos de la transacción.
+
+// La sintaxis básica de una transacción en Redis se realiza de la siguiente manera:
+
+MULTI
+comando1
+comando2
+...
+comandoN
+EXEC
+
+// Ejemplo:
+
+MULTI
+SET book-name "Mastering Redis"
+INCR book-id
+GET book-id
+EXEC
+
+-> 1) OK 2) (integer) 1 3) "1"
+
+
+// discard: descarta todos los comandos emitidos después de MULTI.
+discard 
+
+// watch: monitorea una o más claves para ver si cambian durante la transacción.
+watch key [key ...]
