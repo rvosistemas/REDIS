@@ -1,0 +1,22 @@
+crear el archivo docker-compose.yml
+
+y luego usar
+
+docker-compose up -d
+
+para iniciar el contenedor.
+
+luego en el contenedor usando docker desktop, 
+se puede acceder a la base de datos usando el puerto 3306 
+y el usuario root y la contraseña que se haya configurado 
+en el archivo docker-compose.yml
+
+en este caso como es para probar, se usa root y root
+
+luego en terminal del contenedor se puede usar el comando
+
+redis-cli
+
+para acceder a la base de datos redis
+
+

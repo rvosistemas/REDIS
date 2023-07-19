@@ -1,0 +1,34 @@
+Sets
+===============================
+
+sadd technology Java
+sadd technology Redis
+sadd technology Spring
+smembers technology
+sadd technology Spring  --> Wont allow as unique elements
+smembers technology
+scard technology  --> get number of members in the Key Sets
+sismember technology Java  --> to check member is available or not  (Return 1 if available)
+sissmember technology Node
+spop technology   --> Used to remove random member form the set
+srem technology Spring   --> remove particular member
+smembers technology
+sadd frontend HTML
+sadd frontend Javascript
+sadd frontend Nodejs
+sadd technology Nodejs
+sdiff technology frontend  --> difference of two set
+sdiffstore frontendTechDiff technology frontend  --> stores in New Destination set
+smembers frontendTechDiff
+sinter technology frontend  --> intersection in all the sets
+sinter technology frontend frontendTechDiff
+sinterstore fronttechinter technology frontend
+smembers fronttechinter
+smembers technology
+smembers frontend
+smove technology frontend Redis
+smembers technology
+smembers frontend
+sunion technology frontend
+suionstore newKey technology frontned
+

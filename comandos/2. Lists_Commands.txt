@@ -1,0 +1,97 @@
+Lists
+=====================================
+// elimina todos los datos de la base de datos
+Flushall
+
+// lpush: inserta un elemento al inicio de la lista
+lpush country India
+lpush country USA
+
+// lrange: muestra los elementos de la lista en este caso -> 1) USA 2) India 
+lrange country 0 -1
+
+// agregamos a la lista
+lpush country France
+
+// lrange: muestra los elementos de la lista con indice 0 y 1 
+// en este caso -> 1) France 2) USA
+lrange country 0 1
+
+// muestr toda la lista
+lrange country 0 -1
+
+// llen: muestra la cantidad de elementos de la lista en este caso -> 3
+llen country
+
+// lpop: elimina el primer elemento de la lista y lo devuelve en este caso -> France
+lpop country
+
+// al mostra de nuevo vemos que se elimino el primer elemento -> 1) USA 2) India
+lrange country 0 -1
+
+// rpop: elimina el ultimo elemento de la lista y lo devuelve en este caso -> India
+rpop country 
+
+// al mostra de nuevo vemos que se elimino el ultimo elemento -> 1) USA
+lrange country 0 -1
+
+// lset: reemplaza el valor en la posicion indicada
+lset country 0 France
+
+// devuelve solo -> France
+lrange country 0 -1
+
+// linsert: inserta un elemento antes o despues de otro elemento
+// en este caso con "before" seria antes y saldria -> 1) India 2) France
+linsert country before France India
+lrange country 0 -1
+
+// en este caso con "after" seria despues y saldria -> 1) India 2) France 3) USA
+linsert country after USA UAE
+lrange country 0 -1
+
+// lindex: devuelve el elemento en la posicion indicada
+lindex country 2
+
+// lpushx: inserta un elemento al inicio de la lista solo si la lista existe
+// como en este caso la lista no existe no se inserta nada
+lpushx movies Avengers
+// al llamar esta vacio
+lrange movies 0 -1
+
+// pero si la lista existe si agrega al inicio de la misma
+// en este caso devuelve -> 1) Australia 2) India 3) France 4) USA
+lpushx country Australia
+lrange country 0 -1
+
+// rpushx: inserta un elemento al final de la lista solo si la lista existe
+rpushx movies "Iron man"
+
+// rpoplpush: elimina el ultimo elemento de la lista y lo inserta en otra lista
+rpoplpush country country1
+lrange country 0 -1
+lrnage country1 0 -1
+
+// se pueden agregar varios elementos a la vez
+lpush country "New Zealand" "South Africa"
+lrange country 0 -1
+
+// blpop: bloquea la lista hasta que se inserte un elemento,
+// en este caso espera 10 segundos y si no se inserta nada devuelve vacio
+blpop movies 10
+lpush movies Avengers
+brpop movies Endgame
+
+// SORT: ordena los elementos de la lista 
+// en este caso ordena alfabeticamente
+SORT country ALPHA
+
+// en este caso ordena alfabeticamente de forma inversa
+SORT country ALPHA DESC
+
+// en este caso ordena numericamente si la lista es numerica
+lpush numbers 1 4 3 2
+SORT numbers -> 1 2 3 4
+SORT numbers DESC -> 4 3 2 1
+
+

@@ -1,0 +1,99 @@
+Strings
+===============================
+// agrega el pepito perez a la llave name
+set name "pepito perez"
+
+// obtiene el valor de la llave name -> pepito perez
+get name
+
+// obtiene el valor de la llave name entre los índices 0 y 4 -> pepit
+getrange name 0 4
+
+// obtiene el valor actual -> pepito perez, y luego lo cambia por paco
+getset name paco
+
+// comprobamos el cambio -> paco
+get name
+
+// añadimos a la llave email el valor email@domain.com
+set email email@domain.com
+
+// con mget podemos obtener varios valores a la vez (la m es de multiple) -> 1) paco 2) email@domain.com
+mget name email
+
+// con mset podemos añadir varios valores a la vez (la m es de multiple)
+mset lang English tech redis
+
+// En este caso obtendremos -> English
+get lang
+
+// Este caso obtendremos -> redis
+get tech
+
+// Y en este caso obtendremos -> 1) English 2) redis
+mget tech lang
+
+// con strlen podemos obtener la longitud de un string en estecaso -> 5
+strlen tech
+
+// y si usamos strlen con una llave que no existe retornara -> 0
+strlen anotherkey
+
+// agregamos a la llave count el valor 1
+set count 1
+
+// incrementamos el valor de count en 1 -> 2, el cambio es permanente al volver a llamar a get count
+incr count  --> will return new number
+get count
+
+// decrementamos el valor de count en 1 -> 1, vuelve a ser 1 al volver a llamar a get count
+decr count  --> Will retunr new count
+get count
+
+// incrementamos el valor de count en 10 -> 11
+incrby count 10
+
+// decrementamos el valor de count en 5 -> 6
+decrby count 5
+
+// agregamos a la llave pi el valor de 3.14
+set pi 3.14
+get pi
+
+// incrementamos el valor de pi que es un float la cantidad de 0.0001 -> 3.1401
+incrbyfloat pi 0.0001
+
+// volvemos a llamar a name -> paco
+get name
+
+// agregamos o adicionamos a la llave name el valor de perez, devuelte la longitud del string -> 10
+// tener en cuenta el espacio en blanco entre las comillas
+append name " perez"
+
+// volvemos a llamar a name -> paco perez
+get name
+
+// agregamos a llave a el valor de 1 y lo obtenemos
+set a 1
+get a
+
+// con esto hacemos que la llave a junto con su valor expiren en 10 segundos
+expire a 10
+
+// con ttl segun el momento que lo ejecutemos vemos el tiempo de vida de la llave
+// si en este caso lo ejecutamos 4 segundos despues nos devolvera -> 6
+ttl a
+
+// con el siguiente comando unimos el agregar el valor 1234 a la llave session
+// y que expire en 10 segundos
+setex session 10 1234
+
+// verificamos el tiempo
+ttl session
+
+// si depronto que ver la expiracion de una llave que no lo tiene devolvera un -> -1
+ttl name
+
+
+
+
